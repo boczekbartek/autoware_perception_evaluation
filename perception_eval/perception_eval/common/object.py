@@ -126,6 +126,7 @@ class DynamicObject:
         semantic_label: Label,
         pointcloud_num: Optional[int] = None,
         uuid: Optional[str] = None,
+        scene_token: Optional[str] = None,
         tracked_positions: Optional[List[Tuple[float, float, float]]] = None,
         tracked_orientations: Optional[List[Quaternion]] = None,
         tracked_sizes: Optional[List[Tuple[float, float, float]]] = None,
@@ -148,6 +149,7 @@ class DynamicObject:
         )
         self.semantic_score: float = semantic_score
         self.semantic_label: Label = semantic_label
+        self.scene_token: str = scene_token
 
         # for detection label for case evaluation
         # pointcloud number inside bounding box
