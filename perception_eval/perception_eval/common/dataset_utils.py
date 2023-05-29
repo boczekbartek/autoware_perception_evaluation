@@ -134,6 +134,8 @@ def _sample_to_frame(
         ego2map=ego2map,
         raw_data=raw_data,
         scene_token=sample["scene_token"],
+        frame_index=int(frame_name),
+        frame_token=sample_token,
     )
     return frame
 
