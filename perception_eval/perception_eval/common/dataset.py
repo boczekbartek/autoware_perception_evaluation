@@ -66,12 +66,18 @@ class FrameGroundTruth:
         objects: List[DynamicObject],
         ego2map: Optional[np.ndarray] = None,
         raw_data: Optional[Dict[str, np.ndarray]] = None,
+        scene_token: Optional[str] = None,
+        frame_token: Optional[str] = None,
+        frame_index: Optional[int] = None,
     ) -> None:
         self.unix_time: int = unix_time
         self.frame_name: str = frame_name
         self.objects: List[ObjectType] = objects
         self.ego2map: Optional[np.ndarray] = ego2map
         self.raw_data: Optional[Dict[str, np.ndarray]] = raw_data
+        self.scene_token = scene_token
+        self.frame_token = frame_token
+        self.frame_index = frame_index
 
 
 def load_all_datasets(

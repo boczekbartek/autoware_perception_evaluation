@@ -133,6 +133,9 @@ def _sample_to_frame(
         objects=objects_,
         ego2map=ego2map,
         raw_data=raw_data,
+        scene_token=sample["scene_token"],
+        frame_index=int(frame_name),
+        frame_token=sample_token,
     )
     return frame
 
@@ -450,6 +453,7 @@ def _sample_to_frame_2d(
         frame_name=frame_name,
         objects=objects_,
         raw_data=raw_data,
+        scene_token=nusc_sample["scene_token"],
     )
 
     return frame
