@@ -23,6 +23,7 @@ from perception_eval.common.evaluation_task import EvaluationTask
 from perception_eval.common.label import LabelType
 from perception_eval.common.label import set_target_lists
 from perception_eval.common.threshold import check_thresholds
+from perception_eval.evaluation.matching.object_matching import MatchingMode
 
 # from perception_eval.config import PerceptionEvaluationConfig
 
@@ -162,20 +163,30 @@ class PerceptionPassFailConfig:
         target_labels: Optional[List[str]],
         matching_threshold_list: Optional[List[float]] = None,
         confidence_threshold_list: Optional[List[float]] = None,
+        matching_mode: Optional[MatchingMode] = None,
+        leave_only_critical_fp: bool = True,
     ) -> None:
         """[summary]
         Args:
             evaluator_config (PerceptionEvaluationConfig): Evaluation config
             target_labels (List[str]): Target list. If None or empty list is specified, all labels will be evaluated.
             matching_threshold_list (List[float]): The threshold list for Pass/Fail.
-                For 2D evaluation, IOU2D, for 3D evaluation, PLANEDISTANCE will be used. Defaults to None.
+                If matching_mode is not set, for 2D evaluation, IOU2D, for 3D evaluation, PLANEDISTANCE will be used. Defaults to None.
             confidence_threshold_list (Optional[List[float]]): The list of confidence threshold. Defaults to None.
+            matching_mode (Optional[MatchingMode]): Matching mode. Defaults to None.
+            leave_only_critical_fp (bool): If True, only false positive matched with critical ground truth objects will be left. Defaults to True.
         """
         self.evaluation_task: EvaluationTask = evaluator_config.evaluation_task
         self.target_labels: List[LabelType] = set_target_lists(
             target_labels,
             evaluator_config.label_converter,
         )
+
+        if matching_mode is not None:
+            self.matching_mode = matching_mode
+        else:
+            self.matching_mode = MatchingMode.IOU2D if self.evaluation_task.is_2d() else MatchingMode.PLANEDISTANCE
+
         if matching_threshold_list is None:
             self.matching_threshold_list = None
         else:
@@ -190,6 +201,7 @@ class PerceptionPassFailConfig:
                 confidence_threshold_list,
                 self.target_labels,
             )
+        self.leave_only_critical_fp = leave_only_critical_fp
 
 
 class UseCaseThresholdsError(Exception):

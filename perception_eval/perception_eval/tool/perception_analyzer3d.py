@@ -197,8 +197,15 @@ class PerceptionAnalyzer3D(PerceptionAnalyzerBase):
         if isinstance(object_result, DynamicObjectWithPerceptionResult):
             gt: Optional[DynamicObject] = object_result.ground_truth_object
             estimation: DynamicObject = object_result.estimated_object
-            gt_point1, gt_point2 = object_result.plane_distance.ground_truth_nn_plane
-            est_point1, est_point2 = object_result.plane_distance.estimated_nn_plane
+            # TODO hardcoded for plane distance 
+            if object_result.plane_distance.ground_truth_nn_plane is None:
+                gt_point1, gt_point2 = None, None
+            else:
+                gt_point1, gt_point2 = object_result.plane_distance.ground_truth_nn_plane
+            if object_result.plane_distance.estimated_nn_plane is None:
+                est_point1, est_point2 = None, None
+            else:
+                est_point1, est_point2 = object_result.plane_distance.estimated_nn_plane
         elif isinstance(object_result, DynamicObject):
             if status == MatchingStatus.FN:
                 gt: DynamicObject = object_result

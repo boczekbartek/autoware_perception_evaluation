@@ -66,13 +66,17 @@ class FrameGroundTruth:
         objects: List[DynamicObject],
         ego2map: Optional[np.ndarray] = None,
         raw_data: Optional[np.ndarray] = None,
+        scene_name: Optional[str] = None,
+        sample_token: Optional[str] = None,
     ) -> None:
         self.unix_time: int = unix_time
         self.frame_name: str = frame_name
-        self.frame_id: str = frame_id
+        self.frame_id: FrameID = frame_id
         self.objects: List[ObjectType] = objects
         self.ego2map: Optional[np.ndarray] = ego2map
         self.raw_data: Optional[np.ndarray] = raw_data
+        self.scene_name: Optional[str] = scene_name
+        self.sample_token: Optional[str] = sample_token
 
 
 def load_all_datasets(
@@ -226,6 +230,8 @@ def _get_sample_tokens(nuscenes_sample: dict) -> List[Any]:
         raise DatasetLoadingError("Error: Database has no samples!")
 
     sample_tokens = []
+
+    # TODO just rewrites the list?? 
     for sample_token in sample_tokens_all:
         sample_tokens.append(sample_token)
 

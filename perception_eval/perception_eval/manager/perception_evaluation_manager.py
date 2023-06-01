@@ -169,6 +169,9 @@ class PerceptionEvaluationManager(_EvaluationMangerBase):
         object_results: List[DynamicObjectWithPerceptionResult] = get_object_results(
             estimated_objects=estimated_objects,
             ground_truth_objects=frame_ground_truth.objects,
+            # Filter by confidence before matching
+            # TODO set matching mode 
+            # TODO set matching threshold
         )
         if self.evaluator_config.filtering_params.get("target_uuids"):
             object_results = filter_object_results(

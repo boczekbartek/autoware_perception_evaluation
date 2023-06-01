@@ -68,11 +68,7 @@ class AutowareLabel(LabelBase):
             (AutowareLabel.BICYCLE, "vehicle.bicycle"),
             (AutowareLabel.CAR, "car"),
             (AutowareLabel.CAR, "vehicle.car"),
-            (AutowareLabel.CAR, "vehicle.construction"),
-            (AutowareLabel.CAR, "vehicle.emergency (ambulance & police)"),
             (AutowareLabel.CAR, "vehicle.police"),
-            (AutowareLabel.CAR, "vehicle.fire"),
-            (AutowareLabel.CAR, "vehicle.ambulance"),
             (AutowareLabel.PEDESTRIAN, "pedestrian"),
             (AutowareLabel.PEDESTRIAN, "pedestrian.adult"),
             (AutowareLabel.PEDESTRIAN, "pedestrian.child"),
@@ -114,8 +110,10 @@ class AutowareLabel(LabelBase):
                 (AutowareLabel.TRUCK, "vehicle.truck"),
                 (AutowareLabel.TRUCK, "trailer"),
                 (AutowareLabel.TRUCK, "vehicle.trailer"),
-                (AutowareLabel.MOTORBIKE, "motorbike"),
-                (AutowareLabel.MOTORBIKE, "vehicle.motorcycle"),
+                (AutowareLabel.TRUCK, 'vehicle.fire'),
+                (AutowareLabel.TRUCK, 'vehicle.ambulance'),
+                (AutowareLabel.BICYCLE, "motorbike"),
+                (AutowareLabel.BICYCLE, "vehicle.motorcycle"),
             ]
         return pair_list
 

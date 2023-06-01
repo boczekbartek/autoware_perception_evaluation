@@ -411,11 +411,12 @@ class PerceptionAnalyzerBase(ABC):
             for label in target_labels:
                 scene_results[label].append(obj_results_dict[label])
                 scene_num_gt[label] += num_gt_dict[label]
+            # NOTE(boczekbartek) This does not take into account multiple scenes 
             used_frame.append(int(frame.frame_name))
 
         metrics_score: MetricsScore = MetricsScore(
             config=self.config.metrics_config,
-            used_frame=used_frame,
+            used_frame=list(range(0,800)),
         )
         if self.config.metrics_config.detection_config is not None:
             metrics_score.evaluate_detection(scene_results, scene_num_gt)

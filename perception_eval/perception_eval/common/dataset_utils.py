@@ -128,8 +128,11 @@ def _sample_to_frame(
         objects=objects_,
         ego2map=ego2map,
         raw_data=raw_data,
+        sample_token=sample_token,
+        scene_name=sample["scene_token"]
     )
     return frame
+
 
 
 def _convert_nuscenes_box_to_dynamic_object(

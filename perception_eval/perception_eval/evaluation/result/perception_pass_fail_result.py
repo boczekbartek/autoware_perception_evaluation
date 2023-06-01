@@ -26,7 +26,10 @@ from perception_eval.evaluation.matching.objects_filter import get_fn_objects
 from perception_eval.evaluation.result.perception_frame_config import CriticalObjectFilterConfig
 from perception_eval.evaluation.result.perception_frame_config import PerceptionPassFailConfig
 
-
+class GeneralPassFailResult:
+    # return all FP 
+    pass
+    
 class PassFailResult:
     """[summary]
     Attributes:
@@ -102,14 +105,15 @@ class PassFailResult:
     def get_tp_fp_object_results(
         self,
         object_results: List[DynamicObjectWithPerceptionResult],
-        critical_ground_truth_objects: List[ObjectType],
+        critical_ground_truth_objects: Optional[List[ObjectType]] = None,
     ) -> Tuple[List[DynamicObjectWithPerceptionResult], List[DynamicObjectWithPerceptionResult]]:
         """Get TP and FP object results list from `object_results`.
 
         Args:
             object_results (List[DynamicObjectWithPerceptionResult]): Object results list.
-            critical_ground_truth_objects (List[ObjectType]): Critical ground truth objects
-                must be evaluated at current frame.
+            critical_ground_truth_objects (List[ObjectType]): Used if filter_by_critical is True.
+                 A list of GT objects used to filter False Positives. Only FPs that are
+                 matched with a GT are left. Defaults to None, i.e. None FPs are critical and returned.
 
         Returns:
             List[DynamicObjectWithPerceptionResult]: TP object results.
@@ -119,15 +123,19 @@ class PassFailResult:
         tp_object_results, fp_object_results = divide_tp_fp_objects(
             object_results=object_results,
             target_labels=self.frame_pass_fail_config.target_labels,
-            matching_mode=MatchingMode.IOU2D
-            if self.frame_pass_fail_config.evaluation_task.is_2d()
-            else MatchingMode.PLANEDISTANCE,
+            matching_mode=self.frame_pass_fail_config.matching_mode,
             matching_threshold_list=self.frame_pass_fail_config.matching_threshold_list,
         )
+
+        if not self.frame_pass_fail_config.leave_only_critical_fp:
+            return tp_object_results, fp_object_results
 
         # filter by critical_ground_truth_objects
         fp_critical_object_results: List[DynamicObjectWithPerceptionResult] = []
         for fp_object_result in fp_object_results:
-            if fp_object_result.ground_truth_object in critical_ground_truth_objects:
+            if (
+                critical_ground_truth_objects is not None
+                and fp_object_result.ground_truth_object in critical_ground_truth_objects
+            ):
                 fp_critical_object_results.append(fp_object_result)
         return tp_object_results, fp_critical_object_results
