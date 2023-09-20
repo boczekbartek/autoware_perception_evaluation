@@ -16,7 +16,7 @@ packages = [{ include = "perception_eval", from = "perception_eval" }]
 python = ">=3.8,<3.12"
 nuscenes-devkit = "^1.1.10"
 numpy = ">=1.22,<1.24"
-plotly = "^5.17.0"
+plotly = "^5.13.1"
 pandas = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
